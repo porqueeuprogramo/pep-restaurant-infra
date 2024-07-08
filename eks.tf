@@ -14,6 +14,11 @@ resource "aws_eks_cluster" "eks_cluster_pep" {
   ]
 }
 
+resource "aws_key_pair" "pep_eks_key" {
+  key_name   = "pep_eks_key"
+  public_key = file("~/.ssh/id_rsa.pub") # Replace with the path to your public key
+}
+
 resource "aws_eks_node_group" "eks_node_group_pep" {
   cluster_name    = aws_eks_cluster.eks_cluster_pep.name
   node_group_name = "eks_node_group_pep"
@@ -27,8 +32,4 @@ resource "aws_eks_node_group" "eks_node_group_pep" {
   }
 
   instance_types = ["t2.micro"]
-
-  remote_access {
-    ec2_ssh_key = "pep_eks_key"
-  }
 }
