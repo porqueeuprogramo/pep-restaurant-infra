@@ -1,20 +1,20 @@
-resource "aws_security_group" "eks_cluster_sg" {
-  name        = "eks-cluster-sg"
-  description = "EKS Cluster security group"
-  vpc_id      = aws_vpc.vpc_pep.id
-
-  // Allow inbound traffic from the EKS control plane on port 443 (HTTPS)
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [
-      "18.130.0.0/17",
-      "35.178.0.0/16",
-      "52.56.0.0/16",
-      "52.95.255.0/24"
-    ]
-  }
+# resource "aws_security_group" "eks_cluster_sg" {
+#   name        = "eks-cluster-sg"
+#   description = "EKS Cluster security group"
+#   vpc_id      = aws_vpc.vpc_pep.id
+#
+#   // Allow inbound traffic from the EKS control plane on port 443 (HTTPS)
+#   ingress {
+#     from_port   = 443
+#     to_port     = 443
+#     protocol    = "tcp"
+#     cidr_blocks = [
+#       "18.130.0.0/17",
+#       "35.178.0.0/16",
+#       "52.56.0.0/16",
+#       "52.95.255.0/24"
+#     ]
+#   }
 
   // Allow all traffic within the security group (nodes need to communicate with each other)
   ingress {
