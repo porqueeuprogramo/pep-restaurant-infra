@@ -68,6 +68,7 @@ resource "aws_launch_configuration" "eks_aws_launch_configuration_pep" {
     create_before_destroy = true
   }
 }
+#aws ssm get-parameters --names /aws/service/eks/optimized-ami/1.21/amazon-linux-2/recommended/image_id --region eu-west-2 --query "Parameters[0].Value" --output text
 
 resource "aws_autoscaling_group" "eks_aws_autoscaling_group_pep" {
   launch_configuration = aws_launch_configuration.example.id
