@@ -17,7 +17,7 @@ resource "aws_eks_cluster" "eks_cluster_pep" {
 resource "aws_eks_node_group" "eks_node_group_pep" {
   cluster_name    = aws_eks_cluster.eks_cluster_pep.name
   node_group_name = "eks_node_group_pep"
-  node_role_arn   = aws_iam_role.iam_role_pep.arn
+  node_role_arn   = aws_iam_role.iam_role_node_group.arn
   subnet_ids      = [aws_subnet.subnet_a_pep.id, aws_subnet.subnet_b_pep.id]
 
   scaling_config {
