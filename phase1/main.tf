@@ -8,7 +8,7 @@ data "terraform_remote_state" "terraform-state-phase1" {
   backend  = "s3"
   config   = {
     bucket = "terraform-state-pep"
-    region = eu-west-2
+    region = "eu-west-2"
     key    = "phase-1/terraform.tfstate"
   }
 }
