@@ -44,37 +44,3 @@ resource "aws_security_group_rule" "eks_cluster_api_server" {
   security_group_id         = aws_security_group.eks_cluster_sg_pep.id
   source_security_group_id  = aws_security_group.eks_cluster_sg_pep.id
 }
-
-resource "aws_eks_cluster" "eks_cluster_pep" {
-  name     = "eks_cluster_pep"
-  role_arn = aws_iam_role.iam_role_pep.arn
-
-  vpc_config {
-    subnet_ids = [aws_subnet.subnet_a_pep.id, aws_subnet.subnet_b_pep.id]
-    security_group_ids = [aws_security_group.eks_cluster_sg_pep.id]
-  }
-
-  # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
-  # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
-  depends_on = [
-    aws_iam_role_policy_attachment.AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.AmazonEKSVPCResourceController,
-  ]
-}
-
-resource "aws_eks_node_group" "eks_node_group_pep" {
-  cluster_name    = aws_eks_cluster.eks_cluster_pep.name
-  node_group_name = "eks_node_group_pep"
-  node_role_arn   = aws_iam_role.iam_role_node_group.arn
-  subnet_ids      = [aws_subnet.subnet_a_pep.id, aws_subnet.subnet_b_pep.id]
-
-  scaling_config {
-    desired_size = 2
-    max_size     = 3
-    min_size     = 1
-  }
-
-  instance_types = ["t2.micro"]
-
-  ami_type = "AL2_x86_64"
-}

@@ -18,12 +18,12 @@ resource "aws_iam_role" "iam_role_pep" {
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = "eks-cluster-pep"
+  role       = aws_iam_role.iam_role_pep.name
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-  role       = "eks-cluster-pep"
+  role       = aws_iam_role.iam_role_pep.name
 }
 
 data "aws_iam_policy_document" "assume_role_node" {
