@@ -1,34 +1,19 @@
-resource "aws_security_group" "eks_cluster_sg" {
-  name        = "eks-cluster-sg"
+resource "aws_security_group" "eks_cluster_sg_pep" {
+  name        = "eks-cluster-sg-pep"
   description = "EKS Cluster security group"
   vpc_id      = aws_vpc.vpc_pep.id
 
-  // Allow inbound traffic from the EKS control plane on port 443 (HTTPS)
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [
-      "18.130.0.0/17",
-      "35.178.0.0/16",
-      "52.56.0.0/16",
-      "52.95.255.0/24"
-    ]
-  }
-
-  // Allow all traffic within the security group (nodes need to communicate with each other)
   ingress {
     from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    self        = true
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
-  // Allow outbound traffic to the internet for updates and external communication
   egress {
     from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    to_port     = 65535
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -38,7 +23,7 @@ resource "aws_security_group_rule" "eks_nodes_inbound" {
   from_port         = 1025
   to_port           = 65535
   protocol          = "tcp"
-  security_group_id = aws_security_group.eks_cluster_sg.id
+  security_group_id = aws_security_group.eks_cluster_sg_pep.id
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
@@ -47,7 +32,7 @@ resource "aws_security_group_rule" "eks_nodes_outbound" {
   from_port         = 1025
   to_port           = 65535
   protocol          = "tcp"
-  security_group_id = aws_security_group.eks_cluster_sg.id
+  security_group_id = aws_security_group.eks_cluster_sg_pep.id
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
@@ -56,8 +41,8 @@ resource "aws_security_group_rule" "eks_cluster_api_server" {
   from_port                 = 443
   to_port                   = 443
   protocol                  = "tcp"
-  security_group_id         = aws_security_group.eks_cluster_sg.id
-  source_security_group_id  = aws_security_group.eks_cluster_sg.id
+  security_group_id         = aws_security_group.eks_cluster_sg_pep.id
+  source_security_group_id  = aws_security_group.eks_cluster_sg_pep.id
 }
 
 resource "aws_eks_cluster" "eks_cluster_pep" {
@@ -66,7 +51,7 @@ resource "aws_eks_cluster" "eks_cluster_pep" {
 
   vpc_config {
     subnet_ids = [aws_subnet.subnet_a_pep.id, aws_subnet.subnet_b_pep.id]
-    security_group_ids = [aws_security_group.eks_cluster_sg.id]
+    security_group_ids = [aws_security_group.eks_cluster_sg_pep.id]
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
