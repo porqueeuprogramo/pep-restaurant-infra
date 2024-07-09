@@ -9,7 +9,7 @@ module "phase1" {
 }
 
 module "phase2" {
-  source   = ""
+  source   = "../phase2"
   role_arn = module.phase1.iam_role_arn_output
   role_name = module.phase1.iam_role_name_output
   subnet_a_pep_id = module.phase1.subnet_a_pep_output
