@@ -1,50 +1,29 @@
-variable "role_arn" {
-  description = "The ARN of the IAM role for the EKS cluster"
-  type        = string
-}
-
-variable "role_name" {
-  description = "The ARN of the IAM role for the EKS cluster"
-  type        = string
-}
-
-variable "subnet_a_pep_id" {
-  description = "Subnet a pep id"
-  type        = string
-}
-
-variable "subnet_b_pep_id" {
-  description = "Subnet b pep id"
-  type        = string
-}
-
-variable "eks_cluster_sg_pep_id" {
-  description = "Eks Security Group pep id"
-  type        = string
-}
-
-variable "iam_role_node_group_arn" {
-  description = "The ARN of the IAM role for the EKS cluster Node Group"
-  type        = string
+locals {
+  role_arn = data.terraform_remote_state.terraform-state-phase1.outputs.iam_role_arn_output
+  role_name = data.terraform_remote_state.terraform-state-phase1.outputs.iam_role_name_output
+  subnet_a_pep_id = data.terraform_remote_state.terraform-state-phase1.outputs.subnet_a_pep_output
+  subnet_b_pep_id = data.terraform_remote_state.terraform-state-phase1.outputs.subnet_b_pep_output
+  eks_cluster_sg_pep_id = data.terraform_remote_state.terraform-state-phase1.outputs.eks_cluster_sg_pep_id_output
+  iam_role_node_group_arn = data.terraform_remote_state.terraform-state-phase1.outputs.iam_role_node_group_arn_output
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = var.role_name
+  role       = role_name
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-  role       = var.role_name
+  role       = role_name
 }
 
 resource "aws_eks_cluster" "eks_cluster_pep" {
   name     = "eks_cluster_pep"
-  role_arn = var.role_arn
+  role_arn = role_arn
 
   vpc_config {
-    subnet_ids = [var.subnet_a_pep_id, var.subnet_a_pep_id]
-    security_group_ids = [var.eks_cluster_sg_pep_id]
+    subnet_ids = [subnet_a_pep_id, subnet_b_pep_id]
+    security_group_ids = [eks_cluster_sg_pep_id]
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
@@ -58,8 +37,8 @@ resource "aws_eks_cluster" "eks_cluster_pep" {
 resource "aws_eks_node_group" "eks_node_group_pep" {
   cluster_name    = aws_eks_cluster.eks_cluster_pep.name
   node_group_name = "eks_node_group_pep"
-  node_role_arn   = var.iam_role_node_group_arn
-  subnet_ids      = [var.subnet_a_pep_id, var.subnet_b_pep_id]
+  node_role_arn   = iam_role_node_group_arn
+  subnet_ids      = [subnet_a_pep_id, subnet_b_pep_id]
 
   scaling_config {
     desired_size = 2

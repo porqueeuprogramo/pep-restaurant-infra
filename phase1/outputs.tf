@@ -14,7 +14,7 @@ output "subnet_b_pep_output" {
   value = aws_subnet.subnet_b_pep.id
 }
 
-output "eks_cluster_sg_pep_output" {
+output "eks_cluster_sg_pep_id_output" {
   value = aws_security_group.eks_cluster_sg_pep.id
 }
 
