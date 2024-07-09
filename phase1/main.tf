@@ -9,6 +9,6 @@ data "terraform_remote_state" "terraform-state-phase1" {
   config   = {
     bucket = "terraform-state-pep"
     region = "eu-west-2"
-    key    = "phase-1/terraform.tfstate"
+    key    = "phase1/terraform.tfstate"
   }
 }
