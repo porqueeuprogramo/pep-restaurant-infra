@@ -19,6 +19,5 @@ output "eks_cluster_sg_pep_output" {
 }
 
 output "iam_role_node_group_arn_output" {
-  description = "The name of the IAM role for the node group"
-  value       = aws_iam_role.iam_role_node_group.arn
+  value = aws_iam_role.iam_role_node_group.arn
 }
