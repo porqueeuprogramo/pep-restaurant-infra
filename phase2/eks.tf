@@ -9,21 +9,21 @@ locals {
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = role_name
+  role       = local.role_name
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-  role       = role_name
+  role       = local.role_name
 }
 
 resource "aws_eks_cluster" "eks_cluster_pep" {
   name     = "eks_cluster_pep"
-  role_arn = role_arn
+  role_arn = local.role_arn
 
   vpc_config {
-    subnet_ids = [subnet_a_pep_id, subnet_b_pep_id]
-    security_group_ids = [eks_cluster_sg_pep_id]
+    subnet_ids = [local.subnet_a_pep_id, local.subnet_b_pep_id]
+    security_group_ids = [local.eks_cluster_sg_pep_id]
   }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
@@ -37,8 +37,8 @@ resource "aws_eks_cluster" "eks_cluster_pep" {
 resource "aws_eks_node_group" "eks_node_group_pep" {
   cluster_name    = aws_eks_cluster.eks_cluster_pep.name
   node_group_name = "eks_node_group_pep"
-  node_role_arn   = iam_role_node_group_arn
-  subnet_ids      = [subnet_a_pep_id, subnet_b_pep_id]
+  node_role_arn   = local.iam_role_node_group_arn
+  subnet_ids      = [local.subnet_a_pep_id, local.subnet_b_pep_id]
 
   scaling_config {
     desired_size = 2
