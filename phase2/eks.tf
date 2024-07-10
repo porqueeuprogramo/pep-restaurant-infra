@@ -69,3 +69,18 @@ resource "aws_eks_node_group" "eks_node_group_pep" {
 
   ami_type = "AL2_x86_64"
 }
+
+resource "aws_subnet_tag" "subnet_a_tag" {
+  subnet_id = local.subnet_a_pep_id
+
+  key   = "kubernetes.io/cluster/eks_cluster_pep"
+  value = "shared"
+}
+
+resource "aws_subnet_tag" "subnet_b_tag" {
+  subnet_id = local.subnet_b_pep_id
+
+  key   = "kubernetes.io/cluster/eks_cluster_pep"
+  value = "shared"
+}
+
