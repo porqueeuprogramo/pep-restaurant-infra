@@ -21,3 +21,7 @@ output "eks_cluster_sg_pep_id_output" {
 output "iam_role_node_group_arn_output" {
   value = aws_iam_role.iam_role_node_group.arn
 }
+
+output "iam_role_node_group_name_output" {
+  value = aws_iam_role.iam_role_node_group.name
+}

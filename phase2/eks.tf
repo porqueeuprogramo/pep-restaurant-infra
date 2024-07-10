@@ -5,6 +5,7 @@ locals {
   subnet_b_pep_id = data.terraform_remote_state.terraform-state-phase1.outputs.subnet_b_pep_output
   eks_cluster_sg_pep_id = data.terraform_remote_state.terraform-state-phase1.outputs.eks_cluster_sg_pep_id_output
   iam_role_node_group_arn = data.terraform_remote_state.terraform-state-phase1.outputs.iam_role_node_group_arn_output
+  iam_role_node_group_name = data.terraform_remote_state.terraform-state-phase1.outputs.iam_role_node_group_name_output
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
@@ -19,7 +20,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSWorkerNodePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role       = local.iam_role_node_group_arn
+  role       = local.iam_role_node_group_name
 }
 
 resource "aws_eks_cluster" "eks_cluster_pep" {
