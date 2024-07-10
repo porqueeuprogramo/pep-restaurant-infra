@@ -28,6 +28,11 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly" {
   role       = local.iam_role_node_group_name
 }
 
+resource "aws_iam_role_policy_attachment" "AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = local.iam_role_node_group_name
+}
+
 resource "aws_eks_cluster" "eks_cluster_pep" {
   name     = "eks_cluster_pep"
   role_arn = local.role_arn
