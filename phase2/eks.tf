@@ -23,6 +23,11 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSWorkerNodePolicy" {
   role       = local.iam_role_node_group_name
 }
 
+resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = local.iam_role_node_group_name
+}
+
 resource "aws_eks_cluster" "eks_cluster_pep" {
   name     = "eks_cluster_pep"
   role_arn = local.role_arn
@@ -37,7 +42,8 @@ resource "aws_eks_cluster" "eks_cluster_pep" {
   depends_on = [
     aws_iam_role_policy_attachment.AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.AmazonEKSVPCResourceController,
-    aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy
+    aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly
   ]
 }
 
