@@ -6,7 +6,7 @@ provider "aws" {
 
 locals {
   region = "us-east-1"
-  name   = "pep-restaurant-cluster"
+  name   = "eks_cluster_pep"
   vpc_cidr = "10.123.0.0/16"
   azs      = ["eu-west-2a", "eu-west-2b"]
   public_subnets  = ["10.123.1.0/24", "10.123.2.0/24"]
