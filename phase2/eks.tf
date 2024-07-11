@@ -35,7 +35,7 @@ module "eks" {
       max_size     = 5
       desired_size = 1
 
-      instance_types = ["m5.large"]
+      instance_types = ["t3.large"]
       capacity_type  = "SPOT"
 
       tags = {
