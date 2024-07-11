@@ -5,7 +5,7 @@ provider "aws" {
 }
 
 locals {
-  region = "us-east-1"
+  region = "eu-west-2"
   name   = "eks_cluster_pep"
   vpc_cidr = "10.123.0.0/16"
   azs      = ["eu-west-2a", "eu-west-2b"]
