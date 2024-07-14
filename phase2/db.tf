@@ -1,6 +1,7 @@
-# Documentation -> https://github.com/terraform-aws-modules/terraform-aws-rds
 module "pep-restaurant-ms-manager-db" {
-  source                              = "../../plugins/terraform-aws-modules/terraform-aws-rds-2.24.0"
+  source  = "terraform-aws-modules/rds/aws"
+  version = "2.24.0"
+
   identifier                          = local.pep-restaurant-ms-manager-id
   engine                              = "postgres"
   engine_version                      = "12"
@@ -30,6 +31,6 @@ module "pep-restaurant-ms-manager-db" {
 }
 
 resource "random_password" "pep-ms-restaurant-db-password" {
-  length           = 16
-  special          = false
+  length  = 16
+  special = true
 }
