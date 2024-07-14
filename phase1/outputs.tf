@@ -21,3 +21,7 @@ output "vpc_intra_subnets_output" {
 output "vpc_id_output" {
   value = module.vpc.vpc_id
 }
+
+output "pep_db_enhanced_monitoring_arn_output" {
+  value = aws_iam_role.pep-db-enhanced-monitoring.arn
+}

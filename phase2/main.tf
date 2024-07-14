@@ -24,6 +24,7 @@ locals {
   vpc_public_subnets_output             = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_public_subnets_output
   vpc_intra_subnets_output              = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_intra_subnets_output
   vpc_id_output                         = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_id_output
+  pep_db_enhanced_monitoring_arn_output = data.terraform_remote_state.terraform-state-phase1.outputs.pep_db_enhanced_monitoring_arn_output
   tags = {
     Rds = "rds"
   }
