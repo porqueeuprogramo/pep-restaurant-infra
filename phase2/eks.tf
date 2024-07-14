@@ -2,7 +2,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.1"
 
-  cluster_name                   = local.name
+  cluster_name                   = "eks_cluster_pep"
   cluster_endpoint_public_access = true
 
   cluster_addons = {
@@ -17,9 +17,10 @@ module "eks" {
     }
   }
 
-  vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = module.vpc.private_subnets
-  control_plane_subnet_ids = module.vpc.intra_subnets
+  vpc_id                   = local.vpc_id_output
+  subnet_ids               = local.vpc_private_subnets
+  control_plane_subnet_ids = local.vpc_intra_subnets_output
+  security_group_id        = local.aws_security_group_eks_id_output
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {

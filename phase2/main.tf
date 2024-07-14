@@ -4,15 +4,27 @@ provider "aws" {
   # Add any other required configuration settings here
 }
 
+data "terraform_remote_state" "terraform-state-phase1" {
+  backend  = "s3"
+  config   = {
+    bucket = "terraform-state-pep"
+    region = "eu-west-2"
+    key    = "phase1/terraform.tfstate"
+  }
+}
+
 locals {
-  region = "eu-west-2"
-  name   = "eks_cluster_pep"
-  vpc_cidr = "10.123.0.0/16"
-  azs      = ["eu-west-2a", "eu-west-2b"]
-  public_subnets  = ["10.123.1.0/24", "10.123.2.0/24"]
-  private_subnets = ["10.123.3.0/24", "10.123.4.0/24"]
-  intra_subnets   = ["10.123.5.0/24", "10.123.6.0/24"]
+  pep-restaurant-ms-manager-id          = "pep-restaurant-ms-manager-id"
+  pep-restaurant-ms-manager-db-name     = "pep-restaurant-ms-manager-name"
+  pep-restaurant-ms-manager-db-username = "porqueeuprogramo"
+  pep-restaurant-ms-manager-db-port     = 5432
+  aws_security_group_db_id              = data.terraform_remote_state.terraform-state-phase1.outputs.aws_security_group_db_id_output
+  aws_security_group_eks_id_output      = data.terraform_remote_state.terraform-state-phase1.outputs.aws_security_group_eks_id_output
+  vpc_private_subnets                   = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_private_subnets_output
+  vpc_public_subnets_output             = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_public_subnets_output
+  vpc_intra_subnets_output              = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_intra_subnets_output
+  vpc_id_output                         = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_id_output
   tags = {
-    Example = local.name
+    Rds = "rds"
   }
 }
