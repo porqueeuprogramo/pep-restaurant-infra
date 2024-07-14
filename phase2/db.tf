@@ -19,13 +19,13 @@ resource "random_password" "pep-ms-restaurant-db-password" {
 # https://github.com/terraform-aws-modules/terraform-aws-rds
 module "pep-restaurant-ms-manager-db" {
   source                              = "terraform-aws-modules/rds/aws"
-  version                             = "6.7.0"
+  version                             = "2.24.0"
   identifier                          = local.pep-restaurant-ms-manager-id
   engine                              = "postgres"
   engine_version                      = "12"
   instance_class                      = "db.t3.medium"
   allocated_storage                   = 200
-  db_name                             = local.pep-restaurant-ms-manager-db-name
+  name                             = local.pep-restaurant-ms-manager-db-name
   username                            = local.pep-restaurant-ms-manager-db-username
   password                            = random_password.pep-ms-restaurant-db-password.result
   port                                = local.pep-restaurant-ms-manager-db-port
@@ -37,7 +37,7 @@ module "pep-restaurant-ms-manager-db" {
   tags                                = local.tags
   monitoring_role_arn                 = local.pep_db_enhanced_monitoring_arn
   monitoring_interval                 = "30"
-  subnet_ids                          = ["subnet-0a03fc502e7177871", "subnet-03a0793dabd84f15c"]
+  subnet_ids                          = local.vpc_private_subnets
   family                              = "postgres12"
   major_engine_version                = "12"
   snapshot_identifier                 = null
