@@ -24,7 +24,6 @@ locals {
   vpc_intra_subnets_output              = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_intra_subnets_output
   vpc_id_output                         = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_id_output
   pep_db_enhanced_monitoring_arn_output = data.terraform_remote_state.terraform-state-phase1.outputs.pep_db_enhanced_monitoring_arn_output
-  pep-restaurant-ms-manager-db-endpoint = module.pep-restaurant-ms-manager-db.address
   tags = {
     Rds = "rds"
   }
