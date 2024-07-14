@@ -3,18 +3,18 @@ resource "random_password" "pep-ms-restaurant-db-password" {
   special = false
 }
 
-resource "aws_ssm_parameter" "pep-restaurant-ms-manager-db-password" {
-  name        = "/pep/ms/manager/database/db-password"
-  description = "DB Password for pep-restaurant-ms-manager"
-  type        = "SecureString"
-  value       = random_password.pep-ms-restaurant-db-password.result
-  tags        = local.tags
-  lifecycle {
-    ignore_changes = [
-      value
-    ]
-  }
-}
+#resource "aws_ssm_parameter" "pep-restaurant-ms-manager-db-password" {
+#  name        = "/pep/ms/manager/database/db-password"
+#  description = "DB Password for pep-restaurant-ms-manager"
+#  type        = "SecureString"
+#  value       = random_password.pep-ms-restaurant-db-password.result
+#  tags        = local.tags
+#  lifecycle {
+#    ignore_changes = [
+#      value
+#    ]
+#  }
+#}
 
 # https://github.com/terraform-aws-modules/terraform-aws-rds
 module "pep-restaurant-ms-manager-db" {
@@ -37,7 +37,7 @@ module "pep-restaurant-ms-manager-db" {
   tags                                = local.tags
   monitoring_role_arn                 = local.pep_db_enhanced_monitoring_arn_output
   monitoring_interval                 = "30"
-  subnet_ids                          = local.vpc_private_subnets
+  subnet_ids                          = [local.vpc_private_subnets_output, local.vpc_intra_subnets_output]
   family                              = "postgres12"
   major_engine_version                = "12"
   snapshot_identifier                 = null
