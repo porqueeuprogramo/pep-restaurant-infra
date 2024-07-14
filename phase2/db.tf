@@ -10,7 +10,7 @@ module "pep-restaurant-ms-manager-db" {
   password                            = random_password.pep-ms-restaurant-db-password.result
   port                                = local.pep-restaurant-ms-manager-db-port
   iam_database_authentication_enabled = true
-  vpc_security_group_ids              = local.aws_security_group_db_id
+  vpc_security_group_ids              = [local.aws_security_group_db_id, local.aws_security_group_eks_id_output]
   maintenance_window                  = "Mon:00:00-Mon:03:00"
   backup_window                       = "03:00-06:00"
   backup_retention_period             = 7
