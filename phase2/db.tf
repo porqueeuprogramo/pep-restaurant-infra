@@ -37,7 +37,7 @@ module "pep-restaurant-ms-manager-db" {
   tags                                = local.tags
   monitoring_role_arn                 = local.pep_db_enhanced_monitoring_arn
   monitoring_interval                 = "30"
-  subnet_ids                          = local.vpc_intra_subnets
+  subnet_ids                          = ["subnet-0a03fc502e7177871", "subnet-03a0793dabd84f15c"]
   family                              = "postgres12"
   major_engine_version                = "12"
   snapshot_identifier                 = null
