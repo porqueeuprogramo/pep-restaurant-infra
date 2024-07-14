@@ -20,7 +20,6 @@ module "eks" {
   vpc_id                   = local.vpc_id_output
   subnet_ids               = local.vpc_private_subnets
   control_plane_subnet_ids = local.vpc_intra_subnets_output
-  security_group_id        = local.aws_security_group_eks_id_output
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
