@@ -41,7 +41,6 @@ module "pep-restaurant-ms-manager-db" {
   family                              = "postgres12"
   major_engine_version                = "12"
   snapshot_identifier                 = null
-  final_snapshot_identifier           = local.pep-restaurant-ms-manager-id
   performance_insights_enabled        = true
   deletion_protection                 = true
   enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade"]
