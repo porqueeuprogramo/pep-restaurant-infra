@@ -9,7 +9,7 @@ resource "aws_secretsmanager_secret_version" "pep-restaurant-ms-manager-db-secre
   secret_string = <<EOF
   {
     "engine": "postgres",
-    "port": "${module.pep-restaurant-ms-manager-db.this_db_instance_port}",
+    "port": "${local.pep-restaurant-ms-manager-db-port}",
     "username": "${local.pep-restaurant-ms-manager-db-username}",
     "password": "${random_password.pep-ms-restaurant-db-password.result}",
     "dbname": "${local.pep-restaurant-ms-manager-db-name}"
