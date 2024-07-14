@@ -15,7 +15,7 @@ data "terraform_remote_state" "terraform-state-phase1" {
 
 locals {
   pep-restaurant-ms-manager-id          = "pep-restaurant-ms-manager-id"
-  pep-restaurant-ms-manager-db-name     = "pep-restaurant-ms-manager-name"
+  pep-restaurant-ms-manager-db-name     = "PepRestaurantMsManagerDb"
   pep-restaurant-ms-manager-db-username = "porqueeuprogramo"
   pep-restaurant-ms-manager-db-port     = 5432
   aws_security_group_db_id              = data.terraform_remote_state.terraform-state-phase1.outputs.aws_security_group_db_id_output
