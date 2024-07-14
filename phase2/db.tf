@@ -1,6 +1,6 @@
 
 module "pep-restaurant-ms-manager-db" {
-  source  = "../../plugins/terraform-aws-modules/terraform-aws-rds-2.24.0"
+  source  = "../plugins/terraform-aws-modules/terraform-aws-rds-2.24.0"
   identifier                          = local.pep-restaurant-ms-manager-id
   engine                              = "postgres"
   engine_version                      = "12"
