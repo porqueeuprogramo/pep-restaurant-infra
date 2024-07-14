@@ -1,4 +1,3 @@
-
 module "pep-restaurant-ms-manager-db" {
   source  = "../plugins/terraform-aws-modules/terraform-aws-rds-2.24.0"
   identifier                          = local.pep-restaurant-ms-manager-id
@@ -27,7 +26,6 @@ module "pep-restaurant-ms-manager-db" {
   enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade"]
   storage_encrypted                   = true
   copy_tags_to_snapshot               = true
-  engine_name                         = ""
 }
 
 resource "random_password" "pep-ms-restaurant-db-password" {
