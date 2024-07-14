@@ -48,11 +48,6 @@ output "this_db_instance_status" {
   value       = module.db_instance.this_db_instance_status
 }
 
-output "this_db_instance_name" {
-  description = "The database name"
-  value       = module.db_instance.this_db_instance_name
-}
-
 output "this_db_instance_username" {
   description = "The master username for the database"
   value       = module.db_instance.this_db_instance_username

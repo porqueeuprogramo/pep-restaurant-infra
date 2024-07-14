@@ -9,7 +9,6 @@ locals {
   this_db_instance_id                   = element(concat(aws_db_instance.this_mssql.*.id, aws_db_instance.this.*.id, [""]), 0)
   this_db_instance_resource_id          = element(concat(aws_db_instance.this_mssql.*.resource_id, aws_db_instance.this.*.resource_id, [""]), 0)
   this_db_instance_status               = element(concat(aws_db_instance.this_mssql.*.status, aws_db_instance.this.*.status, [""]), 0)
-  this_db_instance_name                 = element(concat(aws_db_instance.this_mssql.*.name, aws_db_instance.this.*.name, [""]), 0)
   this_db_instance_username             = element(concat(aws_db_instance.this_mssql.*.username, aws_db_instance.this.*.username, [""]), 0)
   this_db_instance_port                 = element(concat(aws_db_instance.this_mssql.*.port, aws_db_instance.this.*.port, [""]), 0)
   this_db_instance_ca_cert_identifier   = element(concat(aws_db_instance.this_mssql.*.ca_cert_identifier, aws_db_instance.this.*.ca_cert_identifier, [""]), 0)
@@ -65,11 +64,6 @@ output "this_db_instance_resource_id" {
 output "this_db_instance_status" {
   description = "The RDS instance status"
   value       = local.this_db_instance_status
-}
-
-output "this_db_instance_name" {
-  description = "The database name"
-  value       = local.this_db_instance_name
 }
 
 output "this_db_instance_username" {
