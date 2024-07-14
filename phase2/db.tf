@@ -32,5 +32,5 @@ module "pep-restaurant-ms-manager-db" {
 
 resource "random_password" "pep-ms-restaurant-db-password" {
   length  = 16
-  special = true
+  special = false
 }
