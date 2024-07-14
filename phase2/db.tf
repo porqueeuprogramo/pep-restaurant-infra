@@ -19,7 +19,7 @@ resource "aws_ssm_parameter" "pep-restaurant-ms-manager-db-password" {
 # https://github.com/terraform-aws-modules/terraform-aws-rds
 module "pep-restaurant-ms-manager-db" {
   source                              = "terraform-aws-modules/rds/aws"
-  version                             = "7.4.0"
+  version                             = "6.7.0"
   identifier                          = local.pep-restaurant-ms-manager-id
   engine                              = "postgres"
   engine_version                      = "12"
