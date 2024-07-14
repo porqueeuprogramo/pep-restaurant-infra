@@ -1,3 +1,21 @@
+resource "random_password" "pep-ms-restaurant-db-password" {
+  length  = 16
+  special = false
+}
+
+resource "aws_ssm_parameter" "pep-restaurant-ms-manager-db-password" {
+  name        = "/pep/ms/manager/database/db-password"
+  description = "DB Password for pep-restaurant-ms-manager"
+  type        = "SecureString"
+  value       = random_password.pep-ms-restaurant-db-password.result
+  tags        = local.tags
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
+  }
+}
+
 # https://github.com/terraform-aws-modules/terraform-aws-rds
 module "pep-restaurant-ms-manager-db" {
   source  = "../plugins/terraform-aws-modules/terraform-aws-rds-2.24.0"
@@ -28,9 +46,4 @@ module "pep-restaurant-ms-manager-db" {
   enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade"]
   storage_encrypted                   = true
   copy_tags_to_snapshot               = true
-}
-
-resource "random_password" "pep-ms-restaurant-db-password" {
-  length  = 16
-  special = false
 }
