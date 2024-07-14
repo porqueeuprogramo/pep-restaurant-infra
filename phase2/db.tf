@@ -35,9 +35,9 @@ module "pep-restaurant-ms-manager-db" {
   backup_window                       = "03:00-06:00"
   backup_retention_period             = 7
   tags                                = local.tags
-  monitoring_role_arn                 = local.pep_db_enhanced_monitoring_arn_output
+  monitoring_role_arn                 = local.pep_db_enhanced_monitoring_arn
   monitoring_interval                 = "30"
-  subnet_ids                          = [local.vpc_private_subnets_output, local.vpc_intra_subnets_output]
+  subnet_ids                          = [local.vpc_private_subnets, local.vpc_intra_subnets]
   family                              = "postgres12"
   major_engine_version                = "12"
   snapshot_identifier                 = null

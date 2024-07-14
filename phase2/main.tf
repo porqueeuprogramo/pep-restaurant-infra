@@ -20,10 +20,10 @@ locals {
   pep-restaurant-ms-manager-db-port     = 5432
   aws_security_group_db_id              = data.terraform_remote_state.terraform-state-phase1.outputs.aws_security_group_db_id_output
   vpc_private_subnets                   = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_private_subnets_output
-  vpc_public_subnets_output             = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_public_subnets_output
-  vpc_intra_subnets_output              = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_intra_subnets_output
-  vpc_id_output                         = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_id_output
-  pep_db_enhanced_monitoring_arn_output = data.terraform_remote_state.terraform-state-phase1.outputs.pep_db_enhanced_monitoring_arn_output
+  vpc_public_subnets                    = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_public_subnets_output
+  vpc_intra_subnets                     = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_intra_subnets_output
+  vpc_id                                = data.terraform_remote_state.terraform-state-phase1.outputs.vpc_id_output
+  pep_db_enhanced_monitoring_arn        = data.terraform_remote_state.terraform-state-phase1.outputs.pep_db_enhanced_monitoring_arn_output
   tags = {
     Rds = "rds"
   }
