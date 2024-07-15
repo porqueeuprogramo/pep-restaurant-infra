@@ -9,5 +9,6 @@ VPC
 
 # Infrastructure Phase 2
 RDS
+RDS - SUBNET GROUPS
 EKS
 KMS
