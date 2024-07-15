@@ -16,42 +16,38 @@ resource "random_password" "pep-ms-restaurant-db-password" {
 #  }
 #}
 
-# Data source to retrieve subnets in eu-west-2a
+# Data source to retrieve a single subnet in eu-west-2a
 data "aws_subnet" "az_a" {
-  filter {
-    name   = "vpc-id"
-    values = [local.vpc_id]
-  }
+  vpc_id            = local.vpc_id
+  availability_zone = "eu-west-2a"
 
-  filter {
-    name   = "availability-zone"
-    values = ["eu-west-2a"]
-  }
+   filter {
+     name   = "tag:Name"
+     values = ["vpc_pep-private-eu-west-2a"]
+   }
 }
 
-# Data source to retrieve subnets in eu-west-2b
+# Data source to retrieve a single subnet in eu-west-2b
 data "aws_subnet" "az_b" {
-  filter {
-    name   = "vpc-id"
-    values = [local.vpc_id]
-  }
+  vpc_id            = local.vpc_id
+  availability_zone = "eu-west-2b"
 
-  filter {
-    name   = "availability-zone"
-    values = ["eu-west-2b"]
-  }
+   filter {
+     name   = "tag:Name"
+     values = ["vpc_pep-private-eu-west-2b"]
+   }
 }
 
-# Use the first subnet from each AZ
+# Use the subnet IDs retrieved from the data sources
 resource "aws_db_subnet_group" "aws_db_subnet_group" {
-  name       = "aws-db-subnet-group"
+  name       = "aws_db_subnet_group"
   subnet_ids = [
     data.aws_subnet.az_a.id,
     data.aws_subnet.az_b.id,
   ]
 
   tags = {
-    Name = "aws-db-subnet-group"
+    Name = "example-db-subnet-group"
   }
 }
 
