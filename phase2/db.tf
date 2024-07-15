@@ -24,7 +24,7 @@ module "pep-restaurant-ms-manager-db" {
   engine_version                      = "12"
   instance_class                      = "db.t3.medium"
   allocated_storage                   = 200
-  name                                = "PepRestaurantMsManagerDb"
+  name                                = local.pep-restaurant-ms-manager-db-name
   username                            = local.pep-restaurant-ms-manager-db-username
   password                            = random_password.pep-ms-restaurant-db-password.result
   port                                = local.pep-restaurant-ms-manager-db-port
