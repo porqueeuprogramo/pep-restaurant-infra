@@ -16,29 +16,42 @@ resource "random_password" "pep-ms-restaurant-db-password" {
 #  }
 #}
 
-# Data source to retrieve subnets in the VPC
-data "aws_subnets" "aws_subnets" {
+# Data source to retrieve subnets in eu-west-2a
+data "aws_subnet" "az_a" {
   filter {
     name   = "vpc-id"
     values = [local.vpc_id]
   }
+
+  filter {
+    name   = "availability-zone"
+    values = ["eu-west-2a"]
+  }
 }
 
-# Output the subnet IDs for verification
-output "subnet_ids" {
-  value = data.aws_subnets.aws_subnets.ids
+# Data source to retrieve subnets in eu-west-2b
+data "aws_subnet" "az_b" {
+  filter {
+    name   = "vpc-id"
+    values = [local.vpc_id]
+  }
+
+  filter {
+    name   = "availability-zone"
+    values = ["eu-west-2b"]
+  }
 }
 
 # Use the first subnet from each AZ
-resource "aws_db_subnet_group" "subnet-group" {
-  name       = "subnet-group"
+resource "aws_db_subnet_group" "aws_db_subnet_group" {
+  name       = "aws-db-subnet-group"
   subnet_ids = [
-    data.aws_subnets.aws_subnets.ids[0],
-    data.aws_subnets.aws_subnets.ids[1],
+    data.aws_subnet.az_a.id,
+    data.aws_subnet.az_b.id,
   ]
 
   tags = {
-    Name = "subnet-group"
+    Name = "aws-db-subnet-group"
   }
 }
 
@@ -56,7 +69,7 @@ module "pep-restaurant-ms-manager-db" {
   password                            = random_password.pep-ms-restaurant-db-password.result
   port                                = local.pep-restaurant-ms-manager-db-port
   iam_database_authentication_enabled = true
-  vpc_security_group_ids              = aws_db_subnet_group.subnet-group.subnet_ids
+  vpc_security_group_ids              = aws_db_subnet_group.aws_db_subnet_group.subnet_ids
   maintenance_window                  = "Mon:00:00-Mon:03:00"
   backup_window                       = "03:00-06:00"
   backup_retention_period             = 7
