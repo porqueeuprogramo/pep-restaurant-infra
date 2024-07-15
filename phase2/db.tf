@@ -3,18 +3,18 @@ resource "random_password" "pep-ms-restaurant-db-password" {
   special = false
 }
 
-#resource "aws_ssm_parameter" "pep-restaurant-ms-manager-db-password" {
-#  name        = "/pep/ms/manager/database/db-password"
-#  description = "DB Password for pep-restaurant-ms-manager"
-#  type        = "SecureString"
-#  value       = random_password.pep-ms-restaurant-db-password.result
-#  tags        = local.tags
-#  lifecycle {
-#    ignore_changes = [
-#      value
-#    ]
-#  }
-#}
+resource "aws_ssm_parameter" "pep-restaurant-ms-manager-db-password" {
+ name        = "/pep/restaurant/ms/manager/database/db-password"
+ description = "DB Password for pep-restaurant-ms-manager"
+ type        = "SecureString"
+ value       = random_password.pep-ms-restaurant-db-password.result
+ tags        = local.tags
+ lifecycle {
+   ignore_changes = [
+     value
+   ]
+ }
+}
 
 # Data source to retrieve a single subnet in eu-west-2a
 data "aws_subnet" "az_a" {
