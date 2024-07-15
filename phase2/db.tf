@@ -16,33 +16,35 @@ resource "random_password" "pep-ms-restaurant-db-password" {
 #  }
 #}
 
-# https://github.com/terraform-aws-modules/terraform-aws-rds
-module "pep-restaurant-ms-manager-db" {
-  source                              = "../plugins/terraform-aws-modules/terraform-aws-rds-6.7.0"
-  identifier                          = local.pep-restaurant-ms-manager-id
-  engine                              = "postgres"
-  engine_version                      = "12"
-  instance_class                      = "db.t3.medium"
-  allocated_storage                   = 200
-  db_name                             = local.pep-restaurant-ms-manager-db-name
-  username                            = local.pep-restaurant-ms-manager-db-username
-  password                            = random_password.pep-ms-restaurant-db-password.result
-  port                                = local.pep-restaurant-ms-manager-db-port
+resource "aws_db_instance" "pep-restaurant-ms-manager-db" {
+  identifier            = local.pep-restaurant-ms-manager-id
+  allocated_storage     = 200
+  engine                = "postgres"
+  engine_version        = "12"
+  instance_class        = "db.t3.medium"
+  db_name               = local.pep-restaurant-ms-manager-db-name
+  username              = local.pep-restaurant-ms-manager-db-username
+  password              = random_password.pep-ms-restaurant-db-password.result
+
+  # Enable IAM database authentication
   iam_database_authentication_enabled = true
-  vpc_security_group_ids              = [local.aws_security_group_db_id]
-  maintenance_window                  = "Mon:00:00-Mon:03:00"
-  backup_window                       = "03:00-06:00"
-  backup_retention_period             = 7
-  tags                                = local.tags
-  monitoring_role_arn                 = local.pep_db_enhanced_monitoring_arn
-  monitoring_interval                 = "30"
-  subnet_ids                          = ["subnet-0e49a165206d475e6", "subnet-0291599311c700825"]
-  family                              = "postgres12"
-  major_engine_version                = "12"
-  snapshot_identifier                 = null
-  performance_insights_enabled        = true
-  deletion_protection                 = true
-  enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade"]
-  storage_encrypted                   = true
-  copy_tags_to_snapshot               = true
+
+  # Set the VPC security group IDs (example assumes you have a security group defined)
+  vpc_security_group_ids = [local.aws_security_group_db_id]
+
+  # Specify the subnet group where the DB instance will be deployed
+  db_subnet_group_name = local.vpc_private_subnets
+
+  # Backup and maintenance window configurations
+  backup_retention_period = 7
+  maintenance_window      = "Mon:00:00-Mon:03:00"
+
+  # Optionally enable deletion protection
+  deletion_protection = false
+
+  # Tags for identification
+  tags = {
+    Name = "pep-restaurant-ms-manager-db"
+    Environment = "Dev"
+  }
 }
