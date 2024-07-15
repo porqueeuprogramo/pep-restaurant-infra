@@ -16,6 +16,38 @@ resource "random_password" "pep-ms-restaurant-db-password" {
 #  }
 #}
 
+# Data source to retrieve subnets in eu-west-2a
+data "aws_subnet_ids" "az_a" {
+  vpc_id = local.vpc_id
+  filter {
+    name   = "availability-zone"
+    values = ["eu-west-2a"]
+  }
+}
+
+# Data source to retrieve subnets in eu-west-2b
+data "aws_subnet_ids" "az_b" {
+  vpc_id = local.vpc_id
+  filter {
+    name   = "availability-zone"
+    values = ["eu-west-2b"]
+  }
+}
+
+# Use the first subnet from each AZ
+resource "aws_db_subnet_group" "subnet-group" {
+  name       = "subnet-group"
+  subnet_ids = [
+    data.aws_subnet_ids.az_a.ids[0],
+    data.aws_subnet_ids.az_b.ids[0],
+  ]
+
+  tags = {
+    Name = "subnet-group"
+  }
+}
+
+
 # https://github.com/terraform-aws-modules/terraform-aws-rds
 module "pep-restaurant-ms-manager-db" {
   source                              = "../plugins/terraform-aws-modules/terraform-aws-rds-6.7.0"
@@ -29,7 +61,7 @@ module "pep-restaurant-ms-manager-db" {
   password                            = random_password.pep-ms-restaurant-db-password.result
   port                                = local.pep-restaurant-ms-manager-db-port
   iam_database_authentication_enabled = true
-  vpc_security_group_ids              = [local.aws_security_group_db_id]
+  vpc_security_group_ids              = aws_db_subnet_group.subnet-group.subnet_ids
   maintenance_window                  = "Mon:00:00-Mon:03:00"
   backup_window                       = "03:00-06:00"
   backup_retention_period             = 7
