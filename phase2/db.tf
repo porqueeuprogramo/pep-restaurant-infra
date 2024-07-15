@@ -16,6 +16,41 @@ resource "random_password" "pep-ms-restaurant-db-password" {
 #  }
 #}
 
+# Data source to retrieve a single subnet in eu-west-2a
+data "aws_subnet" "az_a" {
+  vpc_id            = local.vpc_id
+  availability_zone = "eu-west-2a"
+
+  filter {
+    name   = "tag:Name"
+    values = ["vpc_pep-private-eu-west-2a"]
+  }
+}
+
+# Data source to retrieve a single subnet in eu-west-2b
+data "aws_subnet" "az_b" {
+  vpc_id            = local.vpc_id
+  availability_zone = "eu-west-2b"
+
+  filter {
+    name   = "tag:Name"
+    values = ["vpc_pep-private-eu-west-2b"]
+  }
+}
+
+# Use the subnet IDs retrieved from the data sources
+resource "aws_db_subnet_group" "aws_db_subnet_group" {
+  name       = "aws_db_subnet_group"
+  subnet_ids = [
+    data.aws_subnet.az_a.id,
+    data.aws_subnet.az_b.id,
+  ]
+
+  tags = {
+    Name = "aws-db-subnet-group"
+  }
+}
+
 resource "aws_db_instance" "pep-restaurant-ms-manager-db" {
   identifier            = local.pep-restaurant-ms-manager-id
   allocated_storage     = 200
@@ -33,7 +68,7 @@ resource "aws_db_instance" "pep-restaurant-ms-manager-db" {
   vpc_security_group_ids = [local.aws_security_group_db_id]
 
   # Specify the subnet group where the DB instance will be deployed
-  db_subnet_group_name = local.vpc_private_subnets
+  db_subnet_group_name = aws_db_subnet_group.aws_db_subnet_group.id
 
   # Backup and maintenance window configurations
   backup_retention_period = 7
