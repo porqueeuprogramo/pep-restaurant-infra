@@ -1,11 +1,11 @@
-resource "aws_secretsmanager_secret" "pep-restaurant-ms-manager-db-secret" {
+resource "aws_secretsmanager_secret" "pep-restaurant-ms-manager-db-secret2" {
  description             = "Secret to store pep restaurant ms manager db password"
- name                    = "/secret/pep/restaurant/ms/manager/database"
+ name                    = "/secret/pep/restaurant/ms/manager/database2"
  recovery_window_in_days = 7
 }
 
-resource "aws_secretsmanager_secret_version" "pep-restaurant-ms-manager-db-secret-version" {
- secret_id = aws_secretsmanager_secret.pep-restaurant-ms-manager-db-secret.id
+resource "aws_secretsmanager_secret_version" "pep-restaurant-ms-manager-db-secret-version2" {
+ secret_id = aws_secretsmanager_secret.pep-restaurant-ms-manager-db-secret2.id
  secret_string = <<EOF
  {
    "engine": "postgres",
