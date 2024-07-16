@@ -2,7 +2,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.1"
 
-  cluster_name                   = "eks_cluster_pep2"
+  cluster_name                   = "eks_cluster_pep3"
   cluster_endpoint_public_access = true
 
   cluster_addons = {

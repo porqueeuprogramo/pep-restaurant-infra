@@ -1,6 +1,12 @@
 # pep-restaurant-infra
 Pep Restaurant Infrastructure 
 
+# Before run Infrastructure
+Change name of resources:
+db.tf
+eks.tf
+secrets.tf
+
 # Infrastructure Phase 1 
 IAM
 CLOUDWATCH
