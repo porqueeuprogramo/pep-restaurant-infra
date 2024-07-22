@@ -2,6 +2,9 @@
 Pep Restaurant Infrastructure 
 
 # Before run Infrastructure
+Delete Secrets
+aws secretsmanager delete-secret --secret-id SECRET_ID --force-delete-without-recovery
+
 Change name of resources:
 db.tf
 eks.tf
