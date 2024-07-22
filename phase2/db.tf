@@ -3,8 +3,8 @@ resource "random_password" "pep-ms-restaurant-db-password" {
   special = false
 }
 
-resource "aws_ssm_parameter" "pep-restaurant-ms-manager-db-password6" {
- name        = "/secret/pep/restaurant/ms/manager/database/db-password6"
+resource "aws_ssm_parameter" "pep-restaurant-ms-manager-db-password7" {
+ name        = "/secret/pep/restaurant/ms/manager/database/db-password7"
  description = "DB Password for pep-restaurant-ms-manager"
  type        = "SecureString"
  value       = random_password.pep-ms-restaurant-db-password.result
